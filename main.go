@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"go-JWT/controller"
-	"go-JWT/database"
-	"go-JWT/middleware"
-	"go-JWT/model"
+	"unList_api/controller"
+	"unList_api/database"
+	"unList_api/middleware"
+	"unList_api/model"
+
 	"log"
 
 	"github.com/gin-gonic/gin"

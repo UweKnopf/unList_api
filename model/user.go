@@ -1,9 +1,9 @@
 package model
 
 import (
-	"go-JWT/database"
 	"html"
 	"strings"
+	"unList_api/database"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"

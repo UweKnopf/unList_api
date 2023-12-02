@@ -1,7 +1,7 @@
 package model
 
 import (
-	"go-JWT/database"
+	"unList_api/database"
 
 	"gorm.io/gorm"
 )

@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"go-JWT/helper"
-	"go-JWT/model"
 	"net/http"
+	"unList_api/helper"
+	"unList_api/model"
 
 	"github.com/gin-gonic/gin"
 )
