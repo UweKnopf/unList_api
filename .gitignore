@@ -1,0 +1,4 @@
+/.env.local
+/db-data
+/init.sql
+/pgadmin-data
