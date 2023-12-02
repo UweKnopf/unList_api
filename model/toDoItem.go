@@ -6,17 +6,33 @@ import (
 	"gorm.io/gorm"
 )
 
-type toDoItem struct {
+type ToDoItem struct {
 	gorm.Model
-	Content string `gorm:"type:text" json:"content"`
-	Tick    bool   `gorm:"type:bool" json:"tick"`
-	UserID  uint
+	Content    string `gorm:"type:text" json:"content"`
+	Tick       bool   `gorm:"type:bool" json:"tick"`
+	ToDoListID uint
 }
 
-func (item *toDoItem) CreateItem() (*toDoItem, error) {
+func (item *ToDoItem) CreateItem() (*ToDoItem, error) {
 	err := database.Database.Create(&item).Error
 	if err != nil {
-		return &toDoItem{}, err
+		return &ToDoItem{}, err
 	}
 	return item, nil
+}
+
+func (item *ToDoItem) ToggleTick() (*ToDoItem, error) {
+	if item.Tick {
+		err := database.Database.Model(&item).Update("Tick", false).Error
+		if err != nil {
+			return &ToDoItem{}, err
+		}
+		return item, nil
+	} else {
+		err := database.Database.Model(&item).Update("Tick", true).Error
+		if err != nil {
+			return &ToDoItem{}, err
+		}
+		return item, nil
+	}
 }

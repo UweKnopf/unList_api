@@ -9,7 +9,7 @@ import (
 )
 
 func AddToDo(context *gin.Context) {
-	var input model.Entry
+	var input model.ToDoList
 	if err := context.ShouldBindJSON(&input); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -24,7 +24,7 @@ func AddToDo(context *gin.Context) {
 
 	input.UserID = user.ID
 
-	savedEntry, err := input.Save()
+	savedEntry, err := input.CreateItemList()
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -42,9 +42,29 @@ func GetAllToDoLists(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": user.Entries})
+	context.JSON(http.StatusOK, gin.H{"data": user.ToDoLists})
 }
 
 func TickItem(context *gin.Context) {
+	var input model.ToDoItem
+	if err := context.ShouldBindJSON(&input); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
+	_, err := helper.CurrentUser(context)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	savedEntry, err := input.ToggleTick()
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	context.JSON(http.StatusCreated, gin.H{"data": savedEntry})
 }

@@ -30,6 +30,8 @@ func loadDatabase() {
 	database.Connect()
 	database.Database.AutoMigrate(&model.User{})
 	database.Database.AutoMigrate(&model.Entry{})
+	database.Database.AutoMigrate(&model.ToDoItem{})
+	database.Database.AutoMigrate(&model.ToDoList{})
 }
 
 func serveApplication() {
@@ -43,7 +45,9 @@ func serveApplication() {
 	protectedRoutes.Use(middleware.JWTAuthMiddleware())
 	protectedRoutes.POST("/entry", controller.AddEntry)
 	protectedRoutes.GET("/entry", controller.GetAllEntries)
-	protectedRoutes.GET("/toDoList", controller.AddToDo) //create a list with independent tasks
+	protectedRoutes.POST("/toDoList", controller.AddToDo) //create a list with independent tasks
+	protectedRoutes.GET("/toDoList", controller.GetAllToDoLists)
+	protectedRoutes.POST("/tick", controller.TickItem)
 
 	router.Run(":8000")
 	fmt.Println("Server running on port 8000")

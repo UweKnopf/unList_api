@@ -6,17 +6,25 @@ import (
 	"gorm.io/gorm"
 )
 
-type toDoList struct {
+type ToDoList struct {
 	gorm.Model
-	Content string     `gorm:"type:text" json:"content"`
-	Items   []toDoItem `gorm:"foreignkey:toDoItemID"`
-	UserID  uint
+	Items  []ToDoItem `json:"items"`
+	UserID uint
 }
 
-func (entry *Entry) CreateItemList() (*Entry, error) {
+func (entry *ToDoList) CreateItemList() (*ToDoList, error) {
 	err := database.Database.Create(&entry).Error
 	if err != nil {
-		return &Entry{}, err
+		return &ToDoList{}, err
 	}
 	return entry, nil
+}
+
+func FindToDoListByID(id uint) (ToDoList, error) {
+	var toDoList ToDoList
+	err := database.Database.Preload("Entries").Where("ID=?", id).Find(&toDoList).Error
+	if err != nil {
+		return ToDoList{}, err
+	}
+	return toDoList, nil
 }
